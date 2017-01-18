@@ -16,10 +16,10 @@ class AuthenticateUser
      */
     public function handle($request, Closure $next)
     {
-        if(LoginController::isLoggedIn()){
-            return $next($request);
-        }else{
-            redirect('/login');
+        if(!LoginController::isLoggedIn()){
+            return redirect('/login');
         }
+
+        return $next($request);
     }
 }
