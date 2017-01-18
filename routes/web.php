@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', 'User\LoginController@showLoginPage');
+
+Route::group(['middleware' => 'auth.user'], function(){
+    Route::get('/', 'User\UIController@showIndexPage');
 });
