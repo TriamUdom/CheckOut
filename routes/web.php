@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/login', 'User\LoginController@showLoginPage');
+Route::group(['middleware' => ['unauth.user']], function(){
+    Route::get('/login', 'User\LoginController@showLoginPage');
+    Route::post('/login', 'User\LoginController@handleLoginRequest');
+});
 
 Route::group(['middleware' => ['auth.user']], function(){
     Route::get('/', 'User\UIController@showIndexPage');
