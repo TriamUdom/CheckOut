@@ -13,6 +13,7 @@ class LoginController extends Controller
     }
 
     public static function isLoggedIn(){
-        return Session::has('user_logged_in');
+        return (Session::get('user_logged_in') === true);
+    }
     }
 }
