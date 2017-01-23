@@ -18,4 +18,7 @@ Route::group(['middleware' => ['unauth.user']], function(){
 
 Route::group(['middleware' => ['auth.user']], function(){
     Route::get('/', 'User\UIController@showIndexPage');
+
+    Route::get('/logout', 'User\LoginController@showLogoutPage');
+    Route::post('/logout', 'User\LoginController@handleLogout');
 });
