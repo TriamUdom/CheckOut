@@ -23,6 +23,5 @@ class UserControllerTest extends TestCase
         ]);
 
         $this->assertRedirectedTo('/');
-        $this->assertSessionHas('user_logged_in', true);
     }
 }
