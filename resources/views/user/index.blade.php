@@ -1,6 +1,6 @@
 @extends('templates.master')
 
 @section('content')
-    HI
+    HI {{ Session::get('username') }}
     @include('components.logout_button')
 @stop
