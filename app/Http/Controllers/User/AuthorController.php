@@ -24,6 +24,7 @@ class AuthorController extends Controller
 
     public function validateGoogle2FA(Request $request){
         $google2fa = new Google2FA();
+        $user = User::where('username', Session::get('username'))->firstOrFail();
 
         if($google2fa->verifyKey($user->google2fa_secret, $request->input('2fa'))){
             $token = bin2hex(openssl_random_pseudo_bytes(16));
