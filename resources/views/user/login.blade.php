@@ -4,6 +4,7 @@
     <form action="/login" method="POST">
         <input type="text" name="username" placeholder="Username"><br />
         <input type="password" name="password" placeholder="Password"><br />
+        <input type="text" name="2fa" placeholder="2 Factor Authen"><br />
         {{ csrf_field() }}
         <input type="submit" value="Login">
     </form>
