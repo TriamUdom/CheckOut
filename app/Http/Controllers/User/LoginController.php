@@ -6,6 +6,8 @@ use Hash;
 use Session;
 use App\User;
 use Illuminate\Http\Request;
+use PragmaRX\Google2FA\Google2FA;
+use App\Exceptions\LoginException;
 use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
@@ -18,6 +20,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
+            '2fa' => 'required',
         ]);
 
         $user = User::where('username', $request->input('username'))->first();
@@ -29,10 +32,14 @@ class LoginController extends Controller
             $this->reHashIfRequired($request, $user);
         }
 
-        return $this->createLoginSession($request);
+        if($this->createLoginSession($request)){
+            return redirect('/');
+        }else{
+            throw new LoginException('Cannot create login session');
+        }
     }
 
-    private function validateLoginRequest(Request $request, User $user){
+    private function validateLoginRequest(Request $request, $user){
         if(count($user) !== 1){
             return redirect('/login')->withErrors(['username' => 'Username not found']);
         }
@@ -41,7 +48,11 @@ class LoginController extends Controller
             return redirect('/login')->withErrors(['password' => 'Incorrect password']);
         }
 
-        // TODO : 2FA Authen goes here
+        $google2fa = new Google2FA();
+
+        if(!$google2fa->verifyKey($user->google2fa_secret, $request->input('2fa'))){
+            return redirect('/login')->withErrors(['2fa' => 'Incorrect OTP']);
+        }
 
         return true;
     }
@@ -62,7 +73,7 @@ class LoginController extends Controller
             'user_logged_in' => true,
         ]);
 
-        return redirect('/');
+        return true;
     }
 
     public static function isLoggedIn(){
