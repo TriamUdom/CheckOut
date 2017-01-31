@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Session;
 use App\User;
 use App\Authorized;
 use phpseclib\Crypt\RSA;
