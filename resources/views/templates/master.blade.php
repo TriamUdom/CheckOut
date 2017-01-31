@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Title</title>
+        <link rel="stylesheet" href="/css/app.css" />
         @yield('additional_styles')
     </head>
     <body>
