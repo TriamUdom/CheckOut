@@ -1,6 +1,7 @@
 @extends('templates.master')
 
 @section('content')
+    <h5>Login</h5><br />
     <form action="/login" method="POST">
         <input type="text" name="username" placeholder="Username"><br />
         <input type="password" name="password" placeholder="Password"><br />
