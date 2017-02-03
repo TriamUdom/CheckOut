@@ -18,6 +18,10 @@ class AuthorController extends Controller
     }
 
     public function handleAuthorization(Request $request){
+        if(!$this->validateToken($request->input('token'))){
+            return response()->json([], 401);
+        }
+
         $this->validate($request, [
             'student_id' => 'required|integer|digits:5',
         ]);
@@ -40,6 +44,10 @@ class AuthorController extends Controller
                 'status' => 'Invalid 2 factor token'
             ], 401);
         }
+    }
+
+    private function validateToken(String $token){
+        return ($token === Session::get('author_key'));
     }
 
     private function verifyValidCommand(){
