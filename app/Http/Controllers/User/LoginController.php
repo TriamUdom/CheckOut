@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Hash;
 use Session;
 use App\User;
+use Validator;
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
 use App\Exceptions\LoginException;
@@ -17,44 +18,31 @@ class LoginController extends Controller
     }
 
     public function handleLoginRequest(Request $request){
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required',
-            '2fa' => 'required',
         ]);
 
-        $user = User::where('username', $request->input('username'))->first();
+        if($validator->fails()){
+            return response()->json($validator->errors()->all(), 422);
+        }
 
-        $validateLoginRequest = $this->validateLoginRequest($request, $user);
-        if($validateLoginRequest !== true){
-            return $validateLoginRequest;
+        if(User::where('username', $request->input('username'))->count() == 1){
+            $user = User::where('username', $request->input('username'))->first();
         }else{
+            $validator->errors()->add('username', 'Incorrect username or password');
+            return response()->json($validator->errors()->all(), 422);
+        }
+
+        if(Hash::check($request->input('password'), $user['password'])){
             $this->reHashIfRequired($request, $user);
-        }
-
-        if($this->createLoginSession($request)){
-            return redirect('/');
         }else{
-            throw new LoginException('Cannot create login session');
-        }
-    }
-
-    private function validateLoginRequest(Request $request, $user){
-        if(count($user) !== 1){
-            return redirect('/login')->withErrors(['username' => 'Username not found']);
+            $validator->errors()->add('password', 'Incorrect username or password');
+            return response()->json($validator->errors()->all(), 422);
         }
 
-        if(!Hash::check($request->input('password'), $user['password'])){
-            return redirect('/login')->withErrors(['password' => 'Incorrect password']);
-        }
-
-        $google2fa = new Google2FA();
-
-        if(!$google2fa->verifyKey($user->google2fa_secret, $request->input('2fa'))){
-            return redirect('/login')->withErrors(['2fa' => 'Incorrect OTP']);
-        }
-
-        return true;
+        $this->createLoginSession($request);
+        return response()->json('Logged In!', 200);
     }
 
     private function reHashIfRequired(Request $request, User $user){
