@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -12,6 +11,21 @@ class LoginControllerTest extends TestCase
         parent::setUp();
 
         Session::setDefaultDriver('array');
+    }
+
+    public function test_showLoginPage_success(){
+        $this->get('/login');
+
+        $this->seeStatusCode(200);
+        $this->see('Login');
+    }
+
+    public function test_showLoginPage_already_logged_in(){
+        $this->withSession([
+            'user_logged_in' => true,
+        ])->get('/login');
+
+        $this->assertRedirectedTo('/');
     }
 
     public function test_handleLoginRequest_empty_field(){
