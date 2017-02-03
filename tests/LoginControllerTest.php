@@ -75,4 +75,26 @@ class LoginControllerTest extends TestCase
         $this->assertSessionHas('user_logged_in', true);
         $this->assertSessionHas('username', $user['username']);
     }
+
+    public function test_showLogoutPage_without_login(){
+        $this->get('/logout');
+
+        $this->assertRedirectedTo('/login');
+    }
+
+    public function test_showLogoutPage_success(){
+        $this->withSession([
+            'user_logged_in' => true
+        ])->get('/logout');
+
+        $this->see('Logout');
+    }
+
+    public function test_handleLogout(){
+        $this->withSession([
+            'user_logged_in' => true,
+        ])->call('POST', '/logout');
+
+        $this->assertSessionMissing('user_logged_in');
+    }
 }
