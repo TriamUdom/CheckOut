@@ -14,22 +14,6 @@ class LoginControllerTest extends TestCase
         Session::setDefaultDriver('array');
     }
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    /*public function test_handleLoginRequest_success(){
-        $user = factory(App\User::class)->create();
-
-        $response = $this->call('POST', '/login', [
-            'username' => $user['username'],
-            'password' => 'secret',
-        ]);
-
-        $this->assertRedirectedTo('/'); // @TODO We should change this behaviour so it'll support AJAX call
-    }*/
-
     public function test_handleLoginRequest_empty_field(){
         // Call login with out all the required field
         $response = $this->call('POST', '/login', [
