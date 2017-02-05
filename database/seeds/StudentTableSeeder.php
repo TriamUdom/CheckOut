@@ -20,6 +20,7 @@ class StudentTableSeeder extends Seeder
             'citizen_id' => 1111111111119,
             'student_id' => 12345,
             'year' => 2560,
+            'uniqid' => '0999fc30a9734143616779bdbb2fa68f2dc05bcd71175c1db90842e94b29507b',
         ]);
     }
 }
