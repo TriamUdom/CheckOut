@@ -7,7 +7,7 @@ use App\User;
 use App\Authorized;
 use phpseclib\Crypt\RSA;
 use Illuminate\Http\Request;
-use App\Exception\RSAException;
+use App\Exceptions\RSAException;
 use PragmaRX\Google2FA\Google2FA;
 use App\Http\Controllers\Controller;
 
