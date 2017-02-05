@@ -2,11 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Authorized extends Model
 {
-    protected $colection = 'authorized';
+    protected $collection = 'authorized';
     public $timestamps = false;
     protected $guarded = [];
 }
