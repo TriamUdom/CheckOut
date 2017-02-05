@@ -27,11 +27,11 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function validateGoogle2FA(Request $request){
+    public function validateGoogle2FA(String $input_token){
         $google2fa = new Google2FA();
         $user = User::where('username', Session::get('username'))->firstOrFail();
 
-        if($google2fa->verifyKey($user->google2fa_secret, $request->input('2fa'))){
+        if($google2fa->verifyKey($user->google2fa_secret, $input_token)){
             $token = bin2hex(openssl_random_pseudo_bytes(16));
             Session::flash('author_key', $token);
 
@@ -78,11 +78,13 @@ class AuthorController extends Controller
         }
     }
 
-    private function authorizeCheckOut(Request $request){
+    private function authorizeCheckOut(Int $student_id, String $signature){
         Authorized::insert([
-            'student_id' => $request->input('student_id'),
-            'signature' => 'sign',
+            'student_id' => $student_id,
+            'signature' => $signature,
         ]);
+
+        return true;
     }
 
     private function validateCheckOutRequest(){
