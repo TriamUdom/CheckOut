@@ -74,7 +74,7 @@ class AuthorController extends Controller
         if(!$rsa->sign($message)){
             throw new RSAException('Cannot sign message');
         }else{
-            return $rsa->sign($message);
+            return bin2hex($rsa->sign($message));
         }
     }
 
