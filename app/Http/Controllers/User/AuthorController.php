@@ -55,8 +55,8 @@ class AuthorController extends Controller
     }
 
     private function getRSAKey(){
-        $key['publickey'] = base64_decode(User::where('username', 'test')->pluck('rsa_key.public_key')[0]);
-        $key['privatekey'] = base64_decode(User::where('username', 'test')->pluck('rsa_key.private_key')[0]);
+        $key['publickey'] = base64_decode(User::where('username', Session::get('username'))->pluck('rsa_key.public_key')[0]);
+        $key['privatekey'] = base64_decode(User::where('username', Session::get('username'))->pluck('rsa_key.private_key')[0]);
 
         // TODO : Decrypt the keys (Since these keys will be encrypted)
 
