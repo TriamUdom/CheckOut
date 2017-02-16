@@ -7,6 +7,11 @@ php:
 services:
   - mongodb
 
+addons:
+  sonarqube:
+    token:
+      secure: SONAR_QUBE_TOKEN
+
 before_script:
     - cp .env.travis .env
     - cp travis.phpunit.xml phpunit.xml
@@ -20,3 +25,4 @@ before_script:
 
 script:
     - vendor/bin/phpunit --coverage-text
+    - sonar-scanner
