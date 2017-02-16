@@ -10,7 +10,7 @@ services:
 addons:
   sonarqube:
     token:
-      secure: SONAR_QUBE_TOKEN
+      secure: $SONAR_QUBE_TOKEN
 
 before_script:
     - cp .env.travis .env
