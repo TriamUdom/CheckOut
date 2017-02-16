@@ -15,7 +15,6 @@ addons:
 before_script:
     - cp .env.travis .env
     - cp travis.phpunit.xml phpunit.xml
-    - mysql -e 'create database homestead_test;'
     - echo 'date.timezone = "Asia/Bangkok"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - echo 'extension = "mongodb.so"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - composer self-update
