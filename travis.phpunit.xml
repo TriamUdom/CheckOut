@@ -25,4 +25,8 @@
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="DB_DATABASE" value="checkout_test"/>
     </php>
+    <logging>
+        <log type="coverage-clover" target="report/codeCoverage.xml"/>
+        <log type="junit" target="report/testResults.xml" logIncompleteSkipped="false"/>
+    </logging>
 </phpunit>
